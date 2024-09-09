@@ -1,3 +1,7 @@
+
+![reorder-carousel-cover-photo](https://github.com/user-attachments/assets/3c785fd4-df88-4346-ae4d-9542331b60a4)
+
+
 # Shopify Reorder Carousel Snippet
 This snippet allows the customer to see their previously ordered items and quickly add them to the cart.
 This code loops through a customer's orders and displays each line item as part of the carousel. 
