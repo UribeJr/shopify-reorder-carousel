@@ -1,0 +1,158 @@
+{% comment %} Custom Reorder Snippet {% endcomment %}
+
+<div style="margin-top: 50px;">
+    <h4>Don't forget your usuals</h4>
+    <div class="featured-product-slider">
+        {% assign displayed_variants = "" %}
+        {% for order in customer.orders %}
+          {% for line_item in order.line_items %}
+            {% assign product = line_item.product %}
+            {% assign variant_id = line_item.variant_id %}
+            {% assign product_options = line_item.title | split: " - " %}
+      
+            {% assign variant_id_check = variant_id | append: "," %}
+            {% if displayed_variants contains variant_id_check %}
+                {% comment %} Skips to next iteration of the loop {% endcomment %}
+              {% continue %} 
+            {% endif %}
+      
+            {% assign displayed_variants = displayed_variants | append: variant_id | append: "," %}
+      
+            <div class="slider-item">
+              <a href="{{ product.url }}">
+                <img src="{{ line_item.image | img_url: 'medium' }}" alt="{{ product.title }}">
+              </a>
+              <a href="/cart/add?id={{ variant_id }}" class="quick-add-cta">+ Quick Add</a>
+              <a class="product_title" href="{{ product.url }}" aria-label="{{ product.title | strip_html | escape }}" {% if forloop.index > 1 %} tabindex="-1"{% endif %} data-grid-link>
+                {{- product.title | strip_html | escape -}}
+              </a>
+              <span class="product-option">{{ product_options[1] }}</span>
+              <span class="product-price">{{ product.price | money }}</span>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>    
+  </div>
+
+
+<!-- Include the Slick CSS and JavaScript files -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+<style>
+  .featured-product-slider {
+    width: 100%;
+    border: 1.5px solid #d2d2d2;
+    border-radius: 8px;
+    padding: 20px 20px;
+    margin-bottom: 10px;
+  }
+  .slider-item {
+    margin: 0px 10px;
+  }
+  .slider-item img {
+    width: 100%;
+    max-width: 400px;
+    filter: brightness(var(--filter-bg));
+    border-radius: 8px;
+  }
+  .product_title {
+    font-size: .9em;
+    font-weight: 600;
+    display:block;
+    text-align: left;
+    line-height: 1.2;
+    margin-top: 10px;
+  }
+  .product-option {
+    display: block;
+  }
+  .product-price, .product-option {
+    font-size: .8em;
+    color: #6e6e6e;
+  }
+  .slider-item p {
+    font-size: 1.2em;
+    color: #333;
+  }
+  /* Additional styles for arrows */
+  .slick-prev:before, .slick-next:before {
+    color: rgb(189, 189, 189);
+    font-size: 22px;
+  }
+  .slick-prev, .slick-next {
+    z-index: 1;
+  }
+  .slick-track {
+    margin-left: 0;
+  }
+  .quick-add-cta {
+    padding: 5px;
+    color: #fff;
+    background-color: #cf202f;
+    border-radius: 5px;
+    display: block;
+    font-size: .8em;
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: center;
+  }
+    /* Mobile styles */
+    @media (max-width: 768px) {
+        .featured-product-slider {
+        width: 90%;
+        margin: 0 auto; /* Center the slider */
+        border: none;
+        padding: 10px;
+        }
+        h4 {
+            text-align: center;
+        }
+    }
+
+</style>
+
+<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $('.featured-product-slider').slick({
+      arrows: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 7,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            arrows: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            arrows: true
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            arrows: true
+          }
+        }
+      ]
+    });
+  });
+</script>
+
+
+
